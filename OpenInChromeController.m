@@ -96,7 +96,7 @@ static NSString * encodeByAddingPercentEscapes(NSString *input) {
       NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
 
       // Open the URL with Google Chrome.
-      return [[UIApplication sharedApplication] openURL:chromeURL];
+      return [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler: nil];
     }
   } else if ([[UIApplication sharedApplication] canOpenURL:chromeSimpleURL]) {
     NSString *scheme = [url.scheme lowercaseString];
@@ -120,7 +120,7 @@ static NSString * encodeByAddingPercentEscapes(NSString *input) {
       NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
 
       // Open the URL with Google Chrome.
-      return [[UIApplication sharedApplication] openURL:chromeURL];
+      return [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler: nil];
     }
   }
   return NO;
