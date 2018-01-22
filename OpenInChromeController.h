@@ -40,15 +40,16 @@
 - (BOOL)isChromeInstalled;
 
 // Opens a URL in Google Chrome.
-- (BOOL)openInChrome:(NSURL *)url;
+- (void)openInChrome:(NSURL *)url;
 
 // Open a URL in Google Chrome providing a |callbackURL| to return to the app.
 // URLs from the same app will be opened in the same tab unless |createNewTab|
 // is set to YES.
 // |callbackURL| can be nil.
 // The return value of this method is YES if the URL is successfully opened.
-- (BOOL)openInChrome:(NSURL *)url
+- (void)openInChrome:(NSURL *)url
      withCallbackURL:(NSURL *)callbackURL
-        createNewTab:(BOOL)createNewTab;
+        createNewTab:(BOOL)createNewTab
+   completionHandler:(void (^)(BOOL success))completion;
 
 @end

@@ -59,13 +59,14 @@ static NSString * encodeByAddingPercentEscapes(NSString *input) {
       [[UIApplication sharedApplication] canOpenURL:callbackURL];
 }
 
-- (BOOL)openInChrome:(NSURL *)url {
-  return [self openInChrome:url withCallbackURL:nil createNewTab:NO];
+- (void)openInChrome:(NSURL *)url {
+   [self openInChrome:url withCallbackURL:nil createNewTab:NO completionHandler:nil];
 }
 
-- (BOOL)openInChrome:(NSURL *)url
+- (void)openInChrome:(NSURL *)url
      withCallbackURL:(NSURL *)callbackURL
-        createNewTab:(BOOL)createNewTab {
+        createNewTab:(BOOL)createNewTab
+   completionHandler:(void (^)(BOOL success))completion {
   NSURL *chromeSimpleURL = [NSURL URLWithString:kGoogleChromeHTTPScheme];
   NSURL *chromeCallbackURL = [NSURL URLWithString:kGoogleChromeCallbackScheme];
   if ([[UIApplication sharedApplication] canOpenURL:chromeCallbackURL]) {
@@ -96,7 +97,8 @@ static NSString * encodeByAddingPercentEscapes(NSString *input) {
       NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
 
       // Open the URL with Google Chrome.
-      return [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler: nil];
+      [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler:completion];
+      return;
     }
   } else if ([[UIApplication sharedApplication] canOpenURL:chromeSimpleURL]) {
     NSString *scheme = [url.scheme lowercaseString];
@@ -120,10 +122,14 @@ static NSString * encodeByAddingPercentEscapes(NSString *input) {
       NSURL *chromeURL = [NSURL URLWithString:chromeURLString];
 
       // Open the URL with Google Chrome.
-      return [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler: nil];
+      [[UIApplication sharedApplication] openURL:chromeURL options:@{ } completionHandler:completion];
+      return;
     }
   }
-  return NO;
+  
+  if (completion) {
+    completion(NO);
+  }
 }
 
 @end
